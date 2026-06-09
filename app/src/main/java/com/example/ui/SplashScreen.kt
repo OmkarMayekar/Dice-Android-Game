@@ -95,76 +95,104 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(24.dp)
         ) {
-            // Animated Neon Dice Graphic
+            // Animated Materialistic Dice pair
             Box(
                 modifier = Modifier
                     .size(130.dp)
                     .graphicsLayer {
                         scaleX = scale.value
                         scaleY = scale.value
-                        rotationZ = rotation.value
                     },
                 contentAlignment = Alignment.Center
             ) {
-                // Background glow aura
+                // Let's draw two layered physical dice using Compose Canvas!
                 Canvas(modifier = Modifier.fillMaxSize()) {
+                    val w = size.width
+                    val h = size.height
+
+                    // Size of die face
+                    val dieSizePx = 54.dp.toPx()
+                    val halfSize = dieSizePx / 2f
+                    val offsetVal = halfSize * 0.5f
+
+                    // 1. Back Die: White/Silver Die (Rotated, e.g., -18 degrees)
+                    drawContext.canvas.save()
+                    drawContext.canvas.translate(w * 0.38f, h * 0.38f)
+                    drawContext.canvas.rotate(-18f)
+
+                    // Draw White Die Base Shadow
                     drawRoundRect(
-                        color = Color(0xFFD0BCFF).copy(alpha = 0.15f),
-                        topLeft = Offset(5f, 5f),
-                        size = Size(size.width - 10f, size.height - 10f),
-                        cornerRadius = CornerRadius(24.dp.toPx(), 24.dp.toPx())
+                        color = Color.Black.copy(alpha = 0.2f),
+                        topLeft = Offset(-halfSize + 2.dp.toPx(), -halfSize + 2.dp.toPx()),
+                        size = Size(dieSizePx, dieSizePx),
+                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                     )
-                }
-                
-                // Outer glowing dice frame
-                Canvas(
-                    modifier = Modifier
-                        .size(100.dp)
-                ) {
-                    // Frame
+
+                    // Draw White Die Base
                     drawRoundRect(
-                        color = Color(0xFFD0BCFF),
-                        topLeft = Offset.Zero,
-                        size = size,
-                        cornerRadius = CornerRadius(18.dp.toPx(), 18.dp.toPx()),
-                        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4.dp.toPx())
+                        color = Color(0xFFF5F5F7), // Soft clean white
+                        topLeft = Offset(-halfSize, -halfSize),
+                        size = Size(dieSizePx, dieSizePx),
+                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                     )
-                    
-                    // Dice dots mapping (a gorgeous layout of 5 dots to look like a dice)
-                    val dotRadius = 7.dp.toPx()
-                    val coreColor = Color(0xFFD0BCFF)
-                    val secondaryColor = Color(0xFF8B5CF6)
-                    
-                    // Top-Left Dot
-                    drawCircle(
-                        brush = Brush.radialGradient(listOf(coreColor, secondaryColor)),
-                        radius = dotRadius,
-                        center = Offset(size.width * 0.25f, size.height * 0.25f)
+                    // Draw White Die Border
+                    drawRoundRect(
+                        color = Color(0xFFD2D2D7),
+                        topLeft = Offset(-halfSize, -halfSize),
+                        size = Size(dieSizePx, dieSizePx),
+                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx()),
+                        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.5.dp.toPx())
                     )
-                    // Top-Right Dot
-                    drawCircle(
-                        brush = Brush.radialGradient(listOf(coreColor, secondaryColor)),
-                        radius = dotRadius,
-                        center = Offset(size.width * 0.75f, size.height * 0.25f)
+
+                    // Draw dots for 6
+                    val r6 = 3.5.dp.toPx()
+                    val dotColor6 = Color(0xFF1D1D1F) // Deep obsidian black dots
+                    // Left column dots
+                    drawCircle(color = dotColor6, radius = r6, center = Offset(-offsetVal, -offsetVal))
+                    drawCircle(color = dotColor6, radius = r6, center = Offset(-offsetVal, 0f))
+                    drawCircle(color = dotColor6, radius = r6, center = Offset(-offsetVal, offsetVal))
+                    // Right column dots
+                    drawCircle(color = dotColor6, radius = r6, center = Offset(offsetVal, -offsetVal))
+                    drawCircle(color = dotColor6, radius = r6, center = Offset(offsetVal, 0f))
+                    drawCircle(color = dotColor6, radius = r6, center = Offset(offsetVal, offsetVal))
+
+                    drawContext.canvas.restore()
+
+                    // 2. Front Die: Vivid Red Die (Rotated 15 degrees + animated rot)
+                    drawContext.canvas.save()
+                    drawContext.canvas.translate(w * 0.62f, h * 0.62f)
+                    drawContext.canvas.rotate(15f + (rotation.value * 0.5f)) // animated spin
+
+                    // Drop shadow for the front die on top of the back die
+                    drawRoundRect(
+                        color = Color.Black.copy(alpha = 0.35f),
+                        topLeft = Offset(-halfSize + 3.dp.toPx(), -halfSize + 3.dp.toPx()),
+                        size = Size(dieSizePx, dieSizePx),
+                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                     )
-                    // Center Dot
-                    drawCircle(
-                        brush = Brush.radialGradient(listOf(coreColor, secondaryColor)),
-                        radius = dotRadius,
-                        center = Offset(size.width * 0.5f, size.height * 0.5f)
+
+                    // Draw Red Die Base (Gradient from warm red to crimson)
+                    drawRoundRect(
+                        brush = Brush.linearGradient(
+                            colors = listOf(Color(0xFFFF453A), Color(0xFFD32F2F)) // Modern Material Red
+                        ),
+                        topLeft = Offset(-halfSize, -halfSize),
+                        size = Size(dieSizePx, dieSizePx),
+                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                     )
-                    // Bottom-Left Dot
-                    drawCircle(
-                        brush = Brush.radialGradient(listOf(coreColor, secondaryColor)),
-                        radius = dotRadius,
-                        center = Offset(size.width * 0.25f, size.height * 0.75f)
-                    )
-                    // Bottom-Right Dot
-                    drawCircle(
-                        brush = Brush.radialGradient(listOf(coreColor, secondaryColor)),
-                        radius = dotRadius,
-                        center = Offset(size.width * 0.75f, size.height * 0.75f)
-                    )
+
+                    // Draw dots for 5
+                    val r5 = 4.dp.toPx()
+                    val dotColor5 = Color.White // Brilliant white dots
+                    // Corner dots
+                    drawCircle(color = dotColor5, radius = r5, center = Offset(-offsetVal, -offsetVal))
+                    drawCircle(color = dotColor5, radius = r5, center = Offset(offsetVal, -offsetVal))
+                    drawCircle(color = dotColor5, radius = r5, center = Offset(-offsetVal, offsetVal))
+                    drawCircle(color = dotColor5, radius = r5, center = Offset(offsetVal, offsetVal))
+                    // Center dot
+                    drawCircle(color = dotColor5, radius = r5, center = Offset(0f, 0f))
+
+                    drawContext.canvas.restore()
                 }
             }
             
