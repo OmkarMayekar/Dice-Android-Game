@@ -105,92 +105,90 @@ fun SplashScreen(
                     },
                 contentAlignment = Alignment.Center
             ) {
-                // Let's draw two layered physical dice using Compose Canvas!
+                // Let's draw a single premium dark greyish / metallic dice using Compose Canvas!
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     val w = size.width
                     val h = size.height
 
                     // Size of die face
-                    val dieSizePx = 54.dp.toPx()
+                    val dieSizePx = 68.dp.toPx()
                     val halfSize = dieSizePx / 2f
-                    val offsetVal = halfSize * 0.5f
+                    val offsetVal = halfSize * 0.52f
 
-                    // 1. Back Die: White/Silver Die (Rotated, e.g., -18 degrees)
                     drawContext.canvas.save()
-                    drawContext.canvas.translate(w * 0.38f, h * 0.38f)
-                    drawContext.canvas.rotate(-18f)
+                    // Translate to outer center
+                    drawContext.canvas.translate(w / 2f, h / 2f)
+                    // Apply animated spin
+                    drawContext.canvas.rotate(rotation.value)
 
-                    // Draw White Die Base Shadow
+                    // Draw single heavy drop shadow
                     drawRoundRect(
-                        color = Color.Black.copy(alpha = 0.2f),
-                        topLeft = Offset(-halfSize + 2.dp.toPx(), -halfSize + 2.dp.toPx()),
+                        color = Color.Black.copy(alpha = 0.5f),
+                        topLeft = Offset(-halfSize + 4.dp.toPx(), -halfSize + 4.dp.toPx()),
                         size = Size(dieSizePx, dieSizePx),
-                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
+                        cornerRadius = CornerRadius(14.dp.toPx(), 14.dp.toPx())
                     )
 
-                    // Draw White Die Base
-                    drawRoundRect(
-                        color = Color(0xFFF5F5F7), // Soft clean white
-                        topLeft = Offset(-halfSize, -halfSize),
-                        size = Size(dieSizePx, dieSizePx),
-                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
-                    )
-                    // Draw White Die Border
-                    drawRoundRect(
-                        color = Color(0xFFD2D2D7),
-                        topLeft = Offset(-halfSize, -halfSize),
-                        size = Size(dieSizePx, dieSizePx),
-                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx()),
-                        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.5.dp.toPx())
-                    )
-
-                    // Draw dots for 6
-                    val r6 = 3.5.dp.toPx()
-                    val dotColor6 = Color(0xFF1D1D1F) // Deep obsidian black dots
-                    // Left column dots
-                    drawCircle(color = dotColor6, radius = r6, center = Offset(-offsetVal, -offsetVal))
-                    drawCircle(color = dotColor6, radius = r6, center = Offset(-offsetVal, 0f))
-                    drawCircle(color = dotColor6, radius = r6, center = Offset(-offsetVal, offsetVal))
-                    // Right column dots
-                    drawCircle(color = dotColor6, radius = r6, center = Offset(offsetVal, -offsetVal))
-                    drawCircle(color = dotColor6, radius = r6, center = Offset(offsetVal, 0f))
-                    drawCircle(color = dotColor6, radius = r6, center = Offset(offsetVal, offsetVal))
-
-                    drawContext.canvas.restore()
-
-                    // 2. Front Die: Vivid Red Die (Rotated 15 degrees + animated rot)
-                    drawContext.canvas.save()
-                    drawContext.canvas.translate(w * 0.62f, h * 0.62f)
-                    drawContext.canvas.rotate(15f + (rotation.value * 0.5f)) // animated spin
-
-                    // Drop shadow for the front die on top of the back die
-                    drawRoundRect(
-                        color = Color.Black.copy(alpha = 0.35f),
-                        topLeft = Offset(-halfSize + 3.dp.toPx(), -halfSize + 3.dp.toPx()),
-                        size = Size(dieSizePx, dieSizePx),
-                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
-                    )
-
-                    // Draw Red Die Base (Gradient from warm red to crimson)
+                    // Draw dark steel gradient die face
                     drawRoundRect(
                         brush = Brush.linearGradient(
-                            colors = listOf(Color(0xFFFF453A), Color(0xFFD32F2F)) // Modern Material Red
+                            colors = listOf(
+                                Color(0xFF48484A), // Medium slate gray
+                                Color(0xFF1C1C1E)  // Dark carbon gray
+                            ),
+                            start = Offset(-halfSize, -halfSize),
+                            end = Offset(halfSize, halfSize)
                         ),
                         topLeft = Offset(-halfSize, -halfSize),
                         size = Size(dieSizePx, dieSizePx),
-                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
+                        cornerRadius = CornerRadius(14.dp.toPx(), 14.dp.toPx())
                     )
 
-                    // Draw dots for 5
-                    val r5 = 4.dp.toPx()
-                    val dotColor5 = Color.White // Brilliant white dots
-                    // Corner dots
-                    drawCircle(color = dotColor5, radius = r5, center = Offset(-offsetVal, -offsetVal))
-                    drawCircle(color = dotColor5, radius = r5, center = Offset(offsetVal, -offsetVal))
-                    drawCircle(color = dotColor5, radius = r5, center = Offset(-offsetVal, offsetVal))
-                    drawCircle(color = dotColor5, radius = r5, center = Offset(offsetVal, offsetVal))
-                    // Center dot
-                    drawCircle(color = dotColor5, radius = r5, center = Offset(0f, 0f))
+                    // Draw subtle glowing metallic rim/border
+                    drawRoundRect(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xFF8E8E93), // Silver accent
+                                Color(0xFF2C2C2E)  // Dim background
+                            )
+                        ),
+                        topLeft = Offset(-halfSize, -halfSize),
+                        size = Size(dieSizePx, dieSizePx),
+                        cornerRadius = CornerRadius(14.dp.toPx(), 14.dp.toPx()),
+                        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.dp.toPx())
+                    )
+
+                    // Draw neon/glowing dots for 5
+                    val dotRadius = 4.5.dp.toPx()
+                    val outerNeonGlow = Color(0xFFD0BCFF).copy(alpha = 0.4f)
+                    val coreLimeColor = Color(0xFFE8DEF8) // Glowing lavender light
+
+                    // Helper function to draw a single glowing dot
+                    fun drawGlowingDot(center: Offset) {
+                        // Ambient glow aura
+                        drawCircle(
+                            color = outerNeonGlow,
+                            radius = dotRadius * 2f,
+                            center = center
+                        )
+                        // Core solid dot
+                        drawCircle(
+                            color = coreLimeColor,
+                            radius = dotRadius,
+                            center = center
+                        )
+                    }
+
+                    // Top-Left Dot
+                    drawGlowingDot(Offset(-offsetVal, -offsetVal))
+                    // Top-Right Dot
+                    drawGlowingDot(Offset(offsetVal, -offsetVal))
+                    // Center Dot
+                    drawGlowingDot(Offset(0f, 0f))
+                    // Bottom-Left Dot
+                    drawGlowingDot(Offset(-offsetVal, offsetVal))
+                    // Bottom-Right Dot
+                    drawGlowingDot(Offset(offsetVal, offsetVal))
 
                     drawContext.canvas.restore()
                 }

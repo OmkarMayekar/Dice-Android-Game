@@ -3,6 +3,6 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/ic_launcher_dice_material_1781000592262"
+        android:drawable="@drawable/ic_launcher_dark_grey_dice_1781001016635"
         android:gravity="center" />
 </layer-list>
