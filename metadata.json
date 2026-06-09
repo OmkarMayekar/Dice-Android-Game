@@ -1,5 +1,5 @@
 {
-  "name": "Dice Game",
+  "name": "dice",
   "description": "A polished, modern two-player dice game featuring real-time scores, roll animations, and continuous local match history persistence.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

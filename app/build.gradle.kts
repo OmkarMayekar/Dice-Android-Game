@@ -12,7 +12,7 @@ android {
   compileSdk = 36
 
   defaultConfig {
-    applicationId = "com.aistudio.dicegame.kptwzq"
+    applicationId = "com.greencode27.dice"
     minSdk = 24
     targetSdk = 36
     versionCode = 2
