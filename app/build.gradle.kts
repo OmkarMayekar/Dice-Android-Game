@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-  namespace = "com.example"
+  namespace = "com.greencode27.dice"
   compileSdk = 36
 
   defaultConfig {
